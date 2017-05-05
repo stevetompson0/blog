@@ -310,6 +310,28 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/WEB开发/" itemprop="url" rel="index">
+                    <span itemprop="name">WEB开发</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -341,9 +363,10 @@
 <h3 id="QPS"><a href="#QPS" class="headerlink" title="QPS"></a>QPS</h3><p>作为一个小白程序员，最开始理解的高并发就是服务器在一瞬间内同时涌进大量的请求。一秒算一瞬间吧，那么一秒内如果请求数很高应该算高并发吧？业界用QPS(Query Per Second)来描述一台查询服务器在一秒内能够完成的查询数，现在也用来表示每秒的请求数(Request Per Second)。刚入职的时候刚刚接触到各个系统的调用保护策略都是限制了QPS，就认为QPS就代表着高并发，高并发就代表着高QPS。最近工作中尝试压测才发现这种想法真是太天真了。</p>
 <p>先举一个简单的例子来反驳QPS就是高并发的想法。假设服务器响应速度特别快，一个请求只需要0.1ms就可以返回，花费的内存和CPU也很低。假设只有一个用户在不停地<strong>串行</strong>请求服务器，那么1s内服务器能处理10000个请求，QPS就是10000。这个QPS已经不低了，但是因为是串行，服务器每个时间段只接受一个请求，只需要处理一个请求，所以负载非常低。这明显不符合高并发下服务器负载严重的特征。</p>
 <p>再举一个例子。当我尝试使用JMeter进行压测时，为了防止影响开发机，把QPS的限制设置为20。实际压测过程中监控QPS确实也在20左右波动，照理说如果用QPS作为高并发指标，现在的情况应该根本不算高并发。但是实际情况却是开发机负载瞬间飙升，所有的服务都几乎瘫痪。最后查原因，发现我使用了400个并发线程去请求服务器。</p>
-<h3 id="并发数"><a href="#并发数" class="headerlink" title="并发数"></a>并发数</h3><p>上面已经阐释了QPS并不等于高并发，那么到底高并发是怎么产生的呢？其实从<strong>高并发</strong>这个名字就可以看出，<strong>并发</strong>强调的是<strong>并行</strong>，也就是在同一时间会有很多并行的请求。</p>
-<p>我先解释一下上面第二个例子发生的原因，为什么QPS只有20，机器负载还是这么大？Apache</p>
-<h3 id="CPU"><a href="#CPU" class="headerlink" title="CPU"></a>CPU</h3>
+<h3 id="并发"><a href="#并发" class="headerlink" title="并发"></a>并发</h3><p>上面已经阐释了QPS并不等于高并发，那么到底高并发是怎么产生的呢？其实从<strong>高并发</strong>这个名字就可以看出，<strong>并发</strong>强调的是<strong>并行</strong>，也就是在同一时间会有很多并行的请求。</p>
+<p>我先解释一下上面第二个例子发生的原因，为什么QPS只有20，机器负载还是这么大？服务器在接受到一个请求时，如果是动态页面，会调用CGI让程序去生成这个界面。根据语言的不同，有的会一个请求产生一个进程去处理，有的会一个请求产生一个线程去处理。这样的一个进程或者一个线程就会对内存和CPU有固定的消耗（即使如Nodejs这样使用单线程处理所有请求，处理每个请求本身还是会消耗内存和CPU）。</p>
+<p>如果某一个瞬间并行的请求太多，就会严重消耗内存和CPU，造成服务器负载过高。不管是CPU到达瓶颈还是内存达到瓶颈都会严重影响服务器处理请求的速度，结果就是服务器每秒能够处理的请求数下降，QPS降低。</p>
+
           
         
       
@@ -550,13 +573,22 @@
           
 
           
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/blog/categories/index.html">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
 
           
             
             
             <div class="site-state-item site-state-tags">
               <a href="/blog/tags/index.html">
-                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-count">3</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
